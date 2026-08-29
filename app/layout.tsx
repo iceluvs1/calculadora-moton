@@ -15,6 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://calculadora-moton.awkwardss.chatgpt.site'),
   title: 'Calculadora de motón',
   description:
     'Calcula el peso mínimo requerido del motón de gancho según largo de pluma, diámetro de cable y número de ramales.',
@@ -25,6 +26,26 @@ export const metadata: Metadata = {
     title: 'Calc. motón',
   },
   formatDetection: { telephone: false },
+  openGraph: {
+    title: 'Calculadora de motón',
+    description: 'Peso mínimo del gancho, en segundos',
+    type: 'website',
+    locale: 'es_CL',
+    images: [
+      {
+        url: '/og.png',
+        width: 1200,
+        height: 630,
+        alt: 'Calculadora de motón — peso mínimo del gancho, en segundos',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Calculadora de motón',
+    description: 'Peso mínimo del gancho, en segundos',
+    images: ['/og.png'],
+  },
 };
 
 export const viewport: Viewport = {

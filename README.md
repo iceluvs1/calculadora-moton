@@ -2,6 +2,8 @@
 
 PWA móvil para calcular el peso mínimo requerido del motón de gancho con la fórmula:
 
+**Aplicación publicada:** https://calculadora-moton.awkwardss.chatgpt.site
+
 `G = L × M × N × F`
 
 - **L:** largo total de pluma (m)
