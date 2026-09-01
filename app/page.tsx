@@ -46,6 +46,15 @@ const factors = [
 ] as const;
 
 type CableDiameter = keyof typeof cableWeights;
+type LengthInput = number | '';
+
+function readLengthInput(value: string): LengthInput {
+  return value === '' ? '' : Number(value);
+}
+
+function lengthForCalculation(value: LengthInput) {
+  return value === '' || !Number.isFinite(value) ? 0 : Math.max(0, value);
+}
 
 const integer = new Intl.NumberFormat('es-CL', { maximumFractionDigits: 0 });
 const decimal = new Intl.NumberFormat('es-CL', {
@@ -54,13 +63,14 @@ const decimal = new Intl.NumberFormat('es-CL', {
 });
 
 export default function Home() {
-  const [mainBoom, setMainBoom] = useState(70);
-  const [additionalBoom, setAdditionalBoom] = useState(28);
+  const [mainBoom, setMainBoom] = useState<LengthInput>(70);
+  const [additionalBoom, setAdditionalBoom] = useState<LengthInput>(28);
   const [diameter, setDiameter] = useState<CableDiameter>(28);
   const [reeving, setReeving] = useState(12);
 
   const result = useMemo(() => {
-    const totalLength = Math.max(0, mainBoom) + Math.max(0, additionalBoom);
+    const totalLength =
+      lengthForCalculation(mainBoom) + lengthForCalculation(additionalBoom);
     const cableWeight = cableWeights[diameter];
     const factor = factors[reeving - 1];
     const rawWeight = totalLength * cableWeight * reeving * factor;
@@ -138,7 +148,9 @@ export default function Home() {
                       step="0.1"
                       type="number"
                       value={mainBoom}
-                      onChange={(event) => setMainBoom(Number(event.target.value))}
+                      onChange={(event) =>
+                        setMainBoom(readLengthInput(event.target.value))
+                      }
                     />
                     <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm font-semibold text-muted-foreground">m</span>
                   </div>
@@ -157,7 +169,7 @@ export default function Home() {
                       type="number"
                       value={additionalBoom}
                       onChange={(event) =>
-                        setAdditionalBoom(Number(event.target.value))
+                        setAdditionalBoom(readLengthInput(event.target.value))
                       }
                     />
                     <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm font-semibold text-muted-foreground">m</span>
