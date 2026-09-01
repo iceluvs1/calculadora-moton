@@ -108,9 +108,14 @@ export default function Home() {
               <p className="text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-primary-foreground/60">
                 Herramienta de campo
               </p>
-              <p className="font-heading text-base font-bold tracking-tight sm:text-lg">
-                Calculadora de motón
-              </p>
+              <div className="flex flex-wrap items-center gap-2">
+                <p className="font-heading text-base font-bold tracking-tight sm:text-lg">
+                  Calculadora de motón
+                </p>
+                <span className="rounded bg-primary-foreground px-2 py-0.5 text-[0.65rem] font-black tracking-[0.12em] text-primary shadow-sm">
+                  LIEBHERR
+                </span>
+              </div>
             </div>
           </div>
           <span className="hidden items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-xs font-medium text-primary-foreground/75 sm:flex">
