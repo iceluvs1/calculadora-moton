@@ -1,8 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title">
-  <title id="title">Calculadora de motón</title>
-  <rect width="512" height="512" rx="112" fill="#183047"/>
-  <circle cx="256" cy="210" r="126" fill="none" stroke="#f0ae32" stroke-width="34"/>
-  <path d="M256 82v256" fill="none" stroke="#f6f2e8" stroke-linecap="round" stroke-width="34"/>
-  <path d="M186 310h140v48c0 63-140 63-140 0z" fill="#f0ae32"/>
-  <circle cx="256" cy="210" r="28" fill="#f6f2e8"/>
+  <title id="title">Gancho de grúa blanco sobre fondo rojo</title>
+  <rect width="512" height="512" rx="112" fill="#c62828"/>
+  <path d="M256 54v68" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="32"/>
+  <circle cx="256" cy="206" r="84" fill="none" stroke="#fff" stroke-width="30"/>
+  <circle cx="256" cy="206" r="24" fill="#fff"/>
+  <path d="M256 290v64c0 52-42 94-94 94s-94-42-94-94v-8" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="34"/>
+  <path d="M68 346l42 17" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="34"/>
 </svg>

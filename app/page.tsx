@@ -3,7 +3,6 @@
 import { useMemo, useState } from 'react';
 import {
   Cable,
-  Calculator,
   ChevronRight,
   CircleGauge,
   RotateCcw,
@@ -99,9 +98,12 @@ export default function Home() {
       <header className="border-b border-white/10 bg-primary text-primary-foreground">
         <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-5 py-4 sm:px-8">
           <div className="flex items-center gap-3">
-            <span className="grid size-10 place-items-center rounded-xl bg-accent text-accent-foreground shadow-sm">
-              <Calculator aria-hidden="true" className="size-5" />
-            </span>
+            <img
+              aria-hidden="true"
+              alt=""
+              className="size-10 rounded-xl shadow-sm"
+              src="./icon.svg"
+            />
             <div>
               <p className="text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-primary-foreground/60">
                 Herramienta de campo
