@@ -90,15 +90,15 @@
 
 .crane-backdrop img {
   position: absolute;
-  right: -35%;
+  right: 0;
   bottom: 0;
-  width: auto;
+  width: 100%;
   max-width: none;
-  height: 94vh;
-  height: 94svh;
+  height: calc(100vh - 6rem);
+  height: calc(100svh - 6rem);
   object-fit: contain;
-  object-position: right bottom;
-  opacity: 0.18;
+  object-position: center;
+  opacity: 0.26;
 }
 
 @media (min-width: 640px) {
@@ -107,6 +107,7 @@
     width: min(80vw, 68rem);
     height: 94vh;
     height: 94svh;
+    object-position: right bottom;
     opacity: 0.2;
   }
 }
