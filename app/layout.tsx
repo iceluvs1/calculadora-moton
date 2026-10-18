@@ -38,8 +38,8 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: '#183047',
-  colorScheme: 'light',
+  themeColor: '#000000',
+  colorScheme: 'dark',
   width: 'device-width',
   initialScale: 1,
   viewportFit: 'cover',
@@ -54,8 +54,8 @@ export default function RootLayout({
     <html lang="es">
       <head>
         <link rel="manifest" href="./manifest.webmanifest" />
-        <link rel="icon" href="./icon.svg" type="image/svg+xml" />
-        <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
+        <link rel="icon" href="./favicon-moton.png" type="image/png" sizes="48x48" />
+        <link rel="apple-touch-icon" href="./apple-touch-icon-moton.png" />
       </head>
       <body className="antialiased">
         {children}

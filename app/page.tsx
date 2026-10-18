@@ -94,15 +94,21 @@ export default function Home() {
   }
 
   return (
-    <main className="min-h-screen overflow-x-hidden bg-background text-foreground">
+    <main className="relative isolate min-h-screen overflow-x-hidden bg-background text-foreground">
+      <div className="crane-backdrop" aria-hidden="true">
+        <img src="./crane-background.webp" alt="" decoding="async" draggable={false} />
+      </div>
       <header className="border-b border-white/10 bg-primary text-primary-foreground">
         <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-5 py-4 sm:px-8">
           <div className="flex items-center gap-3">
             <img
               aria-hidden="true"
               alt=""
-              className="size-10 rounded-xl shadow-sm"
-              src="./icon.svg"
+              className="h-16 w-12 shrink-0 object-contain"
+              src="./logo-moton.png"
+              width={48}
+              height={64}
+              draggable={false}
             />
             <div>
               <p className="text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-primary-foreground/60">
@@ -128,7 +134,7 @@ export default function Home() {
       <section className="mx-auto grid w-full max-w-6xl gap-6 px-4 py-5 sm:px-8 sm:py-8 lg:grid-cols-[minmax(0,1.05fr)_minmax(360px,0.95fr)] lg:items-start">
         <div>
           <div className="mb-5 px-1">
-            <p className="mb-2 flex items-center gap-2 text-xs font-bold uppercase tracking-[0.14em] text-accent-foreground">
+            <p className="mb-2 flex items-center gap-2 text-xs font-bold uppercase tracking-[0.14em] text-accent">
               <span className="h-px w-8 bg-accent" /> Cálculo operativo
             </p>
             <h1 className="max-w-xl font-heading text-3xl font-black leading-[1.05] tracking-[-0.035em] sm:text-4xl">
@@ -292,7 +298,7 @@ export default function Home() {
           </Card>
 
           <div className="mt-4 flex gap-3 rounded-2xl border border-border bg-card p-4 text-xs leading-relaxed text-muted-foreground shadow-sm">
-            <ShieldCheck aria-hidden="true" className="mt-0.5 size-4 shrink-0 text-accent-foreground" />
+            <ShieldCheck aria-hidden="true" className="mt-0.5 size-4 shrink-0 text-accent" />
             <p>
               Verifica que el aumento de peso no exceda la capacidad máxima de carga
               para la configuración de pluma utilizada.

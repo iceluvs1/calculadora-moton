@@ -1,11 +1,14 @@
-const CACHE_NAME = 'calculadora-moton-v2';
+const CACHE_NAME = 'calculadora-moton-v4';
 const APP_SHELL = [
   './',
   './manifest.webmanifest',
-  './icon.svg',
-  './icon-192.png',
-  './icon-512.png',
-  './apple-touch-icon.png',
+  './logo-moton.png',
+  './favicon-moton.png',
+  './icon-moton-192.png',
+  './icon-moton-512.png',
+  './icon-moton-maskable-512.png',
+  './apple-touch-icon-moton.png',
+  './crane-background.webp',
 ];
 
 self.addEventListener('install', (event) => {

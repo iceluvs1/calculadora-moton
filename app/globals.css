@@ -34,47 +34,27 @@
   --radius-3xl: calc(var(--radius) * 2.2);
 }
 
-:root {
-  --background: oklch(0.975 0.009 80);
-  --foreground: oklch(0.23 0.035 245);
-  --card: oklch(0.997 0.003 80);
-  --card-foreground: oklch(0.23 0.035 245);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.23 0.035 245);
-  --primary: oklch(0.245 0.048 245);
-  --primary-foreground: oklch(0.98 0.006 80);
-  --secondary: oklch(0.92 0.02 80);
-  --secondary-foreground: oklch(0.27 0.04 245);
-  --muted: oklch(0.94 0.012 80);
-  --muted-foreground: oklch(0.5 0.025 245);
+:root,
+.dark {
+  --background: #000000;
+  --foreground: #f5f5f5;
+  --card: rgb(23 23 23 / 92%);
+  --card-foreground: #f5f5f5;
+  --popover: #202020;
+  --popover-foreground: #f5f5f5;
+  --primary: rgb(17 17 17 / 94%);
+  --primary-foreground: #ffffff;
+  --secondary: #262626;
+  --secondary-foreground: #f5f5f5;
+  --muted: #262626;
+  --muted-foreground: #b8b8b8;
   --accent: oklch(0.81 0.16 76);
   --accent-foreground: oklch(0.25 0.045 65);
   --destructive: oklch(0.58 0.21 27);
-  --border: oklch(0.87 0.02 80);
-  --input: oklch(0.84 0.025 80);
+  --border: #404040;
+  --input: #5a5a5a;
   --ring: oklch(0.68 0.14 75);
   --radius: 0.75rem;
-}
-
-.dark {
-  --background: oklch(0.18 0.035 245);
-  --foreground: oklch(0.95 0.009 80);
-  --card: oklch(0.22 0.04 245);
-  --card-foreground: oklch(0.95 0.009 80);
-  --popover: oklch(0.22 0.04 245);
-  --popover-foreground: oklch(0.95 0.009 80);
-  --primary: oklch(0.89 0.02 80);
-  --primary-foreground: oklch(0.2 0.04 245);
-  --secondary: oklch(0.28 0.035 245);
-  --secondary-foreground: oklch(0.95 0.009 80);
-  --muted: oklch(0.27 0.03 245);
-  --muted-foreground: oklch(0.7 0.02 80);
-  --accent: oklch(0.81 0.16 76);
-  --accent-foreground: oklch(0.25 0.045 65);
-  --destructive: oklch(0.65 0.18 25);
-  --border: oklch(1 0 0 / 12%);
-  --input: oklch(1 0 0 / 18%);
-  --ring: oklch(0.75 0.12 75);
 }
 
 @layer base {
@@ -84,7 +64,7 @@
 
   html {
     @apply font-sans;
-    color-scheme: light;
+    color-scheme: dark;
   }
 
   body {
@@ -96,6 +76,38 @@
   input,
   [role='combobox'] {
     touch-action: manipulation;
+  }
+}
+
+.crane-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+  user-select: none;
+}
+
+.crane-backdrop img {
+  position: absolute;
+  right: -35%;
+  bottom: 0;
+  width: auto;
+  max-width: none;
+  height: 94vh;
+  height: 94svh;
+  object-fit: contain;
+  object-position: right bottom;
+  opacity: 0.18;
+}
+
+@media (min-width: 640px) {
+  .crane-backdrop img {
+    right: 2vw;
+    width: min(80vw, 68rem);
+    height: 94vh;
+    height: 94svh;
+    opacity: 0.2;
   }
 }
 
