@@ -14,6 +14,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Field, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
+import { parseLengthInput } from '@/lib/length-input';
 import {
   Select,
   SelectContent,
@@ -45,15 +46,6 @@ const factors = [
 ] as const;
 
 type CableDiameter = keyof typeof cableWeights;
-type LengthInput = number | '';
-
-function readLengthInput(value: string): LengthInput {
-  return value === '' ? '' : Number(value);
-}
-
-function lengthForCalculation(value: LengthInput) {
-  return value === '' || !Number.isFinite(value) ? 0 : Math.max(0, value);
-}
 
 const integer = new Intl.NumberFormat('es-CL', { maximumFractionDigits: 0 });
 const decimal = new Intl.NumberFormat('es-CL', {
@@ -62,35 +54,39 @@ const decimal = new Intl.NumberFormat('es-CL', {
 });
 
 export default function Home() {
-  const [mainBoom, setMainBoom] = useState<LengthInput>(70);
-  const [additionalBoom, setAdditionalBoom] = useState<LengthInput>(28);
-  const [diameter, setDiameter] = useState<CableDiameter>(28);
-  const [reeving, setReeving] = useState(12);
+  const [mainBoom, setMainBoom] = useState('');
+  const [additionalBoom, setAdditionalBoom] = useState('');
+  const [diameter, setDiameter] = useState<CableDiameter | null>(null);
+  const [reeving, setReeving] = useState<number | null>(null);
+  const mainLength = parseLengthInput(mainBoom);
+  const additionalLength = parseLengthInput(additionalBoom);
 
   const result = useMemo(() => {
-    const totalLength =
-      lengthForCalculation(mainBoom) + lengthForCalculation(additionalBoom);
-    const cableWeight = cableWeights[diameter];
-    const factor = factors[reeving - 1];
-    const rawWeight = totalLength * cableWeight * reeving * factor;
-    const minimum = Math.round(rawWeight);
-    const recommended = Math.round(minimum * 1.1);
+    const totalLength = (mainLength ?? 0) + (additionalLength ?? 0);
+    const cableWeight = diameter === null ? 0 : cableWeights[diameter];
+    const factor = reeving === null ? 0 : factors[reeving - 1];
+    const rawWeight = totalLength * cableWeight * (reeving ?? 0) * factor;
+    const ready = mainLength !== null && additionalLength !== null &&
+      totalLength > 0 && diameter !== null && reeving !== null &&
+      Number.isFinite(rawWeight * 1.1);
+    const minimum = ready ? Math.round(rawWeight) : null;
+    const recommended = minimum === null ? null : Math.round(minimum * 1.1);
 
     return {
-      totalLength,
+      totalLength: Number.isFinite(totalLength) ? totalLength : 0,
       cableWeight,
       factor,
       minimum,
-      margin: recommended - minimum,
+      margin: recommended === null || minimum === null ? null : recommended - minimum,
       recommended,
     };
-  }, [additionalBoom, diameter, mainBoom, reeving]);
+  }, [additionalLength, diameter, mainLength, reeving]);
 
-  function resetExample() {
-    setMainBoom(70);
-    setAdditionalBoom(28);
-    setDiameter(28);
-    setReeving(12);
+  function clearInputs() {
+    setMainBoom('');
+    setAdditionalBoom('');
+    setDiameter(null);
+    setReeving(null);
   }
 
   return (
@@ -156,17 +152,22 @@ export default function Home() {
                     <Input
                       id="main-boom"
                       className="h-12 rounded-xl bg-background pl-10 pr-11 text-base font-semibold"
-                      min="0"
                       inputMode="decimal"
-                      step="0.1"
-                      type="number"
+                      type="text"
+                      placeholder="0"
+                      autoComplete="off"
+                      aria-invalid={mainLength === null}
+                      aria-describedby={mainLength === null ? 'length-help main-boom-error' : 'length-help'}
                       value={mainBoom}
-                      onChange={(event) =>
-                        setMainBoom(readLengthInput(event.target.value))
-                      }
+                      onChange={(event) => setMainBoom(event.target.value)}
                     />
                     <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm font-semibold text-muted-foreground">m</span>
                   </div>
+                  {mainLength === null && (
+                    <p id="main-boom-error" className="text-xs text-red-400" role="alert">
+                      Ingresa un número válido mayor o igual a 0.
+                    </p>
+                  )}
                 </Field>
 
                 <Field>
@@ -176,30 +177,35 @@ export default function Home() {
                     <Input
                       id="additional-boom"
                       className="h-12 rounded-xl bg-background pl-10 pr-11 text-base font-semibold"
-                      min="0"
                       inputMode="decimal"
-                      step="0.1"
-                      type="number"
+                      type="text"
+                      placeholder="0"
+                      autoComplete="off"
+                      aria-invalid={additionalLength === null}
+                      aria-describedby={additionalLength === null ? 'length-help additional-boom-error' : 'length-help'}
                       value={additionalBoom}
-                      onChange={(event) =>
-                        setAdditionalBoom(readLengthInput(event.target.value))
-                      }
+                      onChange={(event) => setAdditionalBoom(event.target.value)}
                     />
                     <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm font-semibold text-muted-foreground">m</span>
                   </div>
+                  {additionalLength === null && (
+                    <p id="additional-boom-error" className="text-xs text-red-400" role="alert">
+                      Ingresa un número válido mayor o igual a 0.
+                    </p>
+                  )}
                 </Field>
 
                 <Field>
-                  <FieldLabel>Diámetro del cable</FieldLabel>
+                  <FieldLabel htmlFor="cable-diameter">Diámetro del cable</FieldLabel>
                   <Select
-                    value={String(diameter)}
+                    value={diameter === null ? null : String(diameter)}
                     onValueChange={(value) =>
-                      setDiameter(Number(value) as CableDiameter)
+                      setDiameter(value === null ? null : Number(value) as CableDiameter)
                     }
                   >
-                    <SelectTrigger className="h-12 w-full rounded-xl bg-background px-3 text-base font-semibold">
+                    <SelectTrigger id="cable-diameter" className="h-12 w-full rounded-xl bg-background px-3 text-base font-semibold">
                       <Cable aria-hidden="true" className="mr-1 size-4 text-muted-foreground" />
-                      <SelectValue />
+                      <SelectValue placeholder="Seleccionar" />
                     </SelectTrigger>
                     <SelectContent>
                       {Object.entries(cableWeights).map(([size, weight]) => (
@@ -212,14 +218,14 @@ export default function Home() {
                 </Field>
 
                 <Field>
-                  <FieldLabel>Número de ramales</FieldLabel>
+                  <FieldLabel htmlFor="reeving">Número de ramales</FieldLabel>
                   <Select
-                    value={String(reeving)}
-                    onValueChange={(value) => setReeving(Number(value))}
+                    value={reeving === null ? null : String(reeving)}
+                    onValueChange={(value) => setReeving(value === null ? null : Number(value))}
                   >
-                    <SelectTrigger className="h-12 w-full rounded-xl bg-background px-3 text-base font-semibold">
+                    <SelectTrigger id="reeving" className="h-12 w-full rounded-xl bg-background px-3 text-base font-semibold">
                       <CircleGauge aria-hidden="true" className="mr-1 size-4 text-muted-foreground" />
-                      <SelectValue />
+                      <SelectValue placeholder="Seleccionar" />
                     </SelectTrigger>
                     <SelectContent>
                       {factors.map((factor, index) => (
@@ -232,6 +238,10 @@ export default function Home() {
                 </Field>
               </div>
 
+              <p id="length-help" className="mt-3 text-xs text-muted-foreground">
+                Decimales con coma o punto (12,5 o 12.5), sin separador de miles.
+              </p>
+
               <div className="mt-5 grid gap-2 rounded-xl border border-border bg-muted/55 p-4 text-sm sm:grid-cols-3">
                 <Metric label="Largo total L" value={`${decimal.format(result.totalLength)} m`} />
                 <Metric label="Peso de cable M" value={`${decimal.format(result.cableWeight)} kg/m`} />
@@ -242,10 +252,10 @@ export default function Home() {
                 className="mt-4 h-11 w-full rounded-xl sm:w-auto sm:px-4"
                 type="button"
                 variant="outline"
-                onClick={resetExample}
+                onClick={clearInputs}
               >
                 <RotateCcw aria-hidden="true" />
-                Restaurar ejemplo
+                Limpiar datos
               </Button>
             </CardContent>
           </Card>
@@ -268,28 +278,34 @@ export default function Home() {
               <output aria-live="polite" aria-atomic="true">
                 <div className="flex items-end gap-2 border-b border-white/12 pb-6">
                   <strong className="font-heading text-[clamp(3rem,13vw,5rem)] font-black leading-none tracking-[-0.06em]">
-                    {integer.format(result.minimum)}
+                    {result.minimum === null ? '—' : integer.format(result.minimum)}
                   </strong>
                   <span className="mb-1.5 text-lg font-bold text-primary-foreground/55">kg</span>
                 </div>
 
-                <div className="my-5 flex items-center gap-3 text-sm text-primary-foreground/75">
+                {result.minimum === null ? (
+                  <p className="my-5 text-sm text-primary-foreground/75">
+                    Ingresa longitudes válidas con un total mayor a 0 y selecciona el diámetro y los ramales para calcular.
+                  </p>
+                ) : (
+                  <div className="my-5 flex items-center gap-3 text-sm text-primary-foreground/75">
                   <span className="rounded-lg bg-white/8 px-3 py-2 font-mono text-xs">
                     {decimal.format(result.totalLength)} × {decimal.format(result.cableWeight)} × {reeving} × {decimal.format(result.factor)}
                   </span>
                   <ChevronRight aria-hidden="true" className="size-4 shrink-0 text-accent" />
-                </div>
+                  </div>
+                )}
 
                 <div className="rounded-2xl bg-accent p-4 text-accent-foreground">
                   <div className="flex items-start justify-between gap-4">
                     <div>
                       <p className="text-xs font-bold uppercase tracking-[0.12em] opacity-70">Recomendado +10%</p>
                       <p className="mt-1 font-heading text-3xl font-black tracking-[-0.03em]">
-                        {integer.format(result.recommended)} kg
+                        {result.recommended === null ? '—' : integer.format(result.recommended)} kg
                       </p>
                     </div>
                     <span className="rounded-full bg-accent-foreground/10 px-2.5 py-1 text-xs font-bold">
-                      +{integer.format(result.margin)} kg
+                      {result.margin === null ? '—' : `+${integer.format(result.margin)}`} kg
                     </span>
                   </div>
                 </div>
