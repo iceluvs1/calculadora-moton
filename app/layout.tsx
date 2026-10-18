@@ -4,7 +4,7 @@ import { PwaRegistration } from './pwa-registration';
 import './globals.css';
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://calculadora-moton.awkwardss.chatgpt.site'),
+  metadataBase: new URL('https://iceluvs1.github.io/calculadora-moton/'),
   title: 'Calculadora de motón',
   description:
     'Calcula el peso mínimo requerido del motón de gancho según largo de pluma, diámetro de cable y número de ramales.',
@@ -15,17 +15,21 @@ export const metadata: Metadata = {
     title: 'Calc. motón',
   },
   formatDetection: { telephone: false },
+  alternates: { canonical: 'https://iceluvs1.github.io/calculadora-moton/' },
   openGraph: {
     title: 'Calculadora de motón',
     description: 'Peso mínimo del gancho, en segundos',
     type: 'website',
     locale: 'es_CL',
+    url: 'https://iceluvs1.github.io/calculadora-moton/',
+    siteName: 'Calculadora de motón',
     images: [
       {
-        url: '/og.png',
+        url: 'https://iceluvs1.github.io/calculadora-moton/og-industrial.jpg',
         width: 1200,
         height: 630,
-        alt: 'Calculadora de motón — peso mínimo del gancho, en segundos',
+        type: 'image/jpeg',
+        alt: 'Calculadora de motón: diseño industrial con un motón Liebherr',
       },
     ],
   },
@@ -33,7 +37,10 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Calculadora de motón',
     description: 'Peso mínimo del gancho, en segundos',
-    images: ['/og.png'],
+    images: [{
+      url: 'https://iceluvs1.github.io/calculadora-moton/og-industrial.jpg',
+      alt: 'Calculadora de motón: diseño industrial con un motón Liebherr',
+    }],
   },
 };
 
@@ -54,8 +61,8 @@ export default function RootLayout({
     <html lang="es">
       <head>
         <link rel="manifest" href="./manifest.webmanifest" />
-        <link rel="icon" href="./favicon-moton.png" type="image/png" sizes="48x48" />
-        <link rel="apple-touch-icon" href="./apple-touch-icon-moton.png" />
+        <link rel="icon" href="./favicon-industrial.png" type="image/png" sizes="48x48" />
+        <link rel="apple-touch-icon" href="./apple-touch-icon-industrial.png" sizes="180x180" />
       </head>
       <body className="antialiased">
         {children}

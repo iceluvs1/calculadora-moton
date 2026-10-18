@@ -12,19 +12,19 @@
   "lang": "es",
   "icons": [
     {
-      "src": "./icon-moton-192.png",
+      "src": "./icon-industrial-192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "./icon-moton-512.png",
+      "src": "./icon-industrial-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "./icon-moton-maskable-512.png",
+      "src": "./icon-industrial-maskable-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"

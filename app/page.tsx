@@ -100,10 +100,10 @@ export default function Home() {
             <img
               aria-hidden="true"
               alt=""
-              className="h-16 w-12 shrink-0 object-contain"
-              src="./logo-moton.png"
-              width={48}
-              height={64}
+              className="size-14 shrink-0 rounded-xl object-contain"
+              src="./logo-industrial.png"
+              width={56}
+              height={56}
               draggable={false}
             />
             <div>
@@ -157,7 +157,7 @@ export default function Home() {
                       placeholder="0"
                       autoComplete="off"
                       aria-invalid={mainLength === null}
-                      aria-describedby={mainLength === null ? 'length-help main-boom-error' : 'length-help'}
+                      aria-describedby={mainLength === null ? 'main-boom-error' : undefined}
                       value={mainBoom}
                       onChange={(event) => setMainBoom(event.target.value)}
                     />
@@ -182,7 +182,7 @@ export default function Home() {
                       placeholder="0"
                       autoComplete="off"
                       aria-invalid={additionalLength === null}
-                      aria-describedby={additionalLength === null ? 'length-help additional-boom-error' : 'length-help'}
+                      aria-describedby={additionalLength === null ? 'additional-boom-error' : undefined}
                       value={additionalBoom}
                       onChange={(event) => setAdditionalBoom(event.target.value)}
                     />
@@ -237,10 +237,6 @@ export default function Home() {
                   </Select>
                 </Field>
               </div>
-
-              <p id="length-help" className="mt-3 text-xs text-muted-foreground">
-                Decimales con coma o punto (12,5 o 12.5), sin separador de miles.
-              </p>
 
               <div className="mt-5 grid gap-2 rounded-xl border border-border bg-muted/55 p-4 text-sm sm:grid-cols-3">
                 <Metric label="Largo total L" value={`${decimal.format(result.totalLength)} m`} />

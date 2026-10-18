@@ -1,13 +1,13 @@
-const CACHE_NAME = 'calculadora-moton-v5';
+const CACHE_NAME = 'calculadora-moton-v7';
 const APP_SHELL = [
   './',
   './manifest.webmanifest',
-  './logo-moton.png',
-  './favicon-moton.png',
-  './icon-moton-192.png',
-  './icon-moton-512.png',
-  './icon-moton-maskable-512.png',
-  './apple-touch-icon-moton.png',
+  './logo-industrial.png',
+  './favicon-industrial.png',
+  './icon-industrial-192.png',
+  './icon-industrial-512.png',
+  './icon-industrial-maskable-512.png',
+  './apple-touch-icon-industrial.png',
   './crane-background.webp',
 ];
 
