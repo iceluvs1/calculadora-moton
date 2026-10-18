@@ -98,7 +98,7 @@
   height: calc(100svh - 6rem);
   object-fit: contain;
   object-position: center;
-  opacity: 0.40;
+  opacity: 0.90;
 }
 
 @media (min-width: 640px) {
