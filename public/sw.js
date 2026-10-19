@@ -1,4 +1,4 @@
-const CACHE_NAME = 'calculadora-moton-v8';
+const CACHE_NAME = 'calculadora-moton-v9';
 const APP_SHELL = [
   './',
   './manifest.webmanifest',
