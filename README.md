@@ -1,5 +1,4 @@
-# Calculadora de motón
-
+# Calculadora LIEBHERR
 PWA móvil para calcular el peso mínimo requerido del motón de gancho con la fórmula:
 
 

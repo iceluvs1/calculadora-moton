@@ -1,7 +1,7 @@
 {
-  "name": "Calculadora de motón de gancho",
-  "short_name": "Calc. motón",
-  "description": "Calcula el peso mínimo requerido del motón de gancho.",
+  "name": "Calculadora LIEBHERR",
+  "short_name": "Calc. LIEBHERR",
+  "description": "Peso del motón, presión sobre el suelo y superficie de apoyo necesaria. Herramienta independiente.",
   "id": "./",
   "start_url": "./",
   "scope": "./",

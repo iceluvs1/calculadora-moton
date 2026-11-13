@@ -4,11 +4,12 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* Fuentes y variables que utilizan las clases de Tailwind. */
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: Arial, Helvetica, sans-serif;
-  --font-mono: "Courier New", Courier, monospace;
+  --font-mono: 'Courier New', Courier, monospace;
   --font-heading: Arial, Helvetica, sans-serif;
   --color-ring: var(--ring);
   --color-input: var(--input);
@@ -34,6 +35,7 @@
   --radius-3xl: calc(var(--radius) * 2.2);
 }
 
+/* Paleta general: fondo negro, paneles semitransparentes y acento amarillo. */
 :root,
 .dark {
   --background: #000000;
@@ -79,6 +81,7 @@
   }
 }
 
+/* La grúa es decorativa: queda detrás de la app y no intercepta pulsaciones. */
 .crane-backdrop {
   position: fixed;
   inset: 0;
@@ -98,6 +101,7 @@
   height: calc(100svh - 6rem);
   object-fit: contain;
   object-position: center;
+  /* 0 = invisible; 1 = totalmente visible. Este valor corresponde al móvil. */
   opacity: 1;
 }
 
@@ -108,10 +112,207 @@
     height: 94vh;
     height: 94svh;
     object-position: right bottom;
+    /* Opacidad para tablet/escritorio, independiente de la regla móvil. */
     opacity: 1;
   }
 }
 
 ::selection {
   background: color-mix(in oklch, var(--accent) 50%, transparent);
+}
+
+/* Navegación entre las dos calculadoras, adaptable a pantallas estrechas. */
+.calculator-tabs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  width: 100%;
+  height: auto !important;
+  gap: 6px;
+  padding: 6px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: rgb(17 17 17 / 96%);
+}
+
+.calculator-tabs [role='tab'] {
+  min-height: 50px;
+  height: auto;
+  white-space: normal;
+  border-radius: 11px;
+  padding: 10px 8px;
+  font-weight: 700;
+  color: var(--muted-foreground);
+}
+
+.calculator-tabs [role='tab'][data-active] {
+  color: var(--accent-foreground);
+  background: var(--accent);
+}
+
+[role='tabpanel'][hidden] {
+  display: none;
+}
+
+/* Una columna en celular; formulario y resultados en paralelo en escritorio. */
+.calculator-section {
+  display: grid;
+  width: 100%;
+  max-width: 72rem;
+  gap: 1.5rem;
+  margin: 0 auto;
+  padding: 1.5rem 1rem;
+}
+
+.calculator-section > * {
+  min-width: 0;
+}
+.section-intro {
+  margin-bottom: 1.25rem;
+  padding: 0.75rem;
+  border-radius: 0.75rem;
+  background: rgb(0 0 0 / 80%);
+}
+.section-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--accent);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.section-eyebrow > span {
+  width: 2rem;
+  height: 1px;
+  background: var(--accent);
+}
+.section-title {
+  margin-top: 0.5rem;
+  font-size: 2rem;
+  font-weight: 900;
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+}
+.section-description {
+  margin-top: 0.75rem;
+  font-size: 0.875rem;
+  line-height: 1.7;
+  color: var(--muted-foreground);
+}
+.plate-choice {
+  position: relative;
+  cursor: pointer;
+  padding: 0.75rem 0.5rem;
+  text-align: center;
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  background: #101010;
+}
+.plate-choice:hover {
+  border-color: var(--muted-foreground);
+}
+.plate-choice-selected {
+  border-color: var(--accent);
+  background: #282117;
+  box-shadow: inset 0 0 0 1px var(--accent);
+}
+.plate-choice:has(input:focus-visible) {
+  outline: 3px solid var(--ring);
+  outline-offset: 3px;
+}
+/* Tipografía compartida: se conserva la apariencia original de resultados del motón.
+   Cambiar estas clases actualiza ambas calculadoras a la vez. */
+.result-label,
+.result-caption,
+.result-primary-value,
+.result-secondary-value,
+.result-highlight-label {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.result-label {
+  color: rgb(255 255 255 / 55%);
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.result-caption {
+  margin-top: 0.25rem;
+  color: rgb(255 255 255 / 75%);
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 400;
+}
+
+.result-primary-value {
+  display: block;
+  font-size: clamp(3rem, 13vw, 5rem);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.06em;
+  overflow-wrap: anywhere;
+}
+
+/* Limita el tamaño al ancho de la tarjeta para dejar espacio para kN/m². */
+.pressure-result-value {
+  font-size: min(clamp(2rem, 13vw, 5rem), 18cqi);
+}
+
+.result-secondary-value {
+  display: block;
+  font-size: 1.875rem;
+  font-weight: 900;
+  line-height: 2.25rem;
+  letter-spacing: -0.03em;
+  overflow-wrap: anywhere;
+}
+
+.result-highlight-label {
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+.soil-table th,
+.soil-table td {
+  padding: 0.65rem 0.4rem;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+.soil-table th:last-child,
+.soil-table td:last-child {
+  text-align: right;
+  min-width: 5.25rem;
+  font-weight: 600;
+}
+.soil-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+@media (min-width: 640px) {
+  .calculator-section {
+    padding: 2rem;
+  }
+  .calculator-tabs {
+    max-width: 38rem;
+  }
+  .section-title {
+    font-size: 2.5rem;
+  }
+  .section-description {
+    font-size: 1rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .calculator-section {
+    grid-template-columns: minmax(0, 1.05fr) minmax(360px, 0.95fr);
+    align-items: start;
+  }
 }
