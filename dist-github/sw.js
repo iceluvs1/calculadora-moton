@@ -1,5 +1,5 @@
 // Cambia la versión al publicar una actualización para renovar la caché de la PWA.
-const CACHE_NAME = 'calculadora-moton-v20';
+const CACHE_NAME = 'calculadora-moton-v22';
 // Archivos básicos que se guardan al instalar el service worker.
 const APP_SHELL = [
   './',

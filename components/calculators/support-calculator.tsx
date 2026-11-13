@@ -1,25 +1,18 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { ArrowDownToLine, ChevronDown, RotateCcw } from 'lucide-react';
+import { useState } from 'react';
+import { ArrowDownToLine, RotateCcw } from 'lucide-react';
+import { CalculatorSelect } from '@/components/calculators/calculator-select';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Field, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
 import { parseLengthInput } from '@/lib/length-input';
 import {
   changeSupportUnit,
   dimensionUnits,
   forceUnits,
   pressureUnits,
-  usesNativeUnitPicker,
   type SupportMeasurement,
 } from '@/lib/support-units';
 import {
@@ -45,13 +38,6 @@ function formatRoundedUp(value: number) {
 }
 
 export function SupportCalculator() {
-  const [nativeUnitPicker, setNativeUnitPicker] = useState(false);
-  useEffect(() => {
-    setNativeUnitPicker(
-      usesNativeUnitPicker(navigator.userAgent, navigator.platform),
-    );
-  }, []);
-
   // Cada campo guarda el texto editable y el valor convertido para las fórmulas.
   const [force, setForce] = useState<
     SupportMeasurement<keyof typeof forceUnits>
@@ -111,7 +97,6 @@ export function SupportCalculator() {
                 label="Fuerza de apoyo F"
                 units={forceUnits}
                 unitLabel="Unidad de fuerza"
-                nativeUnitPicker={nativeUnitPicker}
                 value={force}
                 onChange={setForce}
               />
@@ -154,7 +139,6 @@ export function SupportCalculator() {
                   label="Dimensión exterior l"
                   units={dimensionUnits}
                   unitLabel="Unidad de dimensión"
-                  nativeUnitPicker={nativeUnitPicker}
                   value={dimension}
                   onChange={setDimension}
                 />
@@ -168,7 +152,6 @@ export function SupportCalculator() {
                 label="Presión admisible del suelo q"
                 units={pressureUnits}
                 unitLabel="Unidad de presión"
-                nativeUnitPicker={nativeUnitPicker}
                 value={soilPressure}
                 onChange={setSoilPressure}
               />
@@ -339,8 +322,7 @@ export function SupportCalculator() {
                 {formatRoundedUp(squarePad.totalArea)} m² de área total
               </span>
               <strong className="mt-1 block break-words text-sm">
-                Lado teórico (√área total) ≈ {formatRoundedUp(squarePad.sideM)}{' '}
-                m
+                Lado teórico ≈ {formatRoundedUp(squarePad.sideM)} m
               </strong>
             </output>
           )}
@@ -349,7 +331,7 @@ export function SupportCalculator() {
         {comparison && (
           <div
             role="status"
-            className={`rounded-2xl border p-4 text-sm leading-relaxed ${comparison === 'exceeds' ? 'border-red-400/40 bg-red-950/90 text-red-100' : 'border-border bg-card text-foreground'}`}
+            className={`rounded-2xl border p-4 text-sm leading-relaxed ${comparison === 'exceeds' ? 'border-red-400/40 bg-red-950/90 text-red-100' : 'border-emerald-400/40 bg-emerald-950/90 text-emerald-100'}`}
           >
             <p className="font-bold">
               {comparison === 'exceeds'
@@ -373,7 +355,6 @@ function DecimalField<Unit extends string>({
   label,
   units,
   unitLabel,
-  nativeUnitPicker,
   value,
   onChange,
 }: {
@@ -381,11 +362,9 @@ function DecimalField<Unit extends string>({
   label: string;
   units: Record<Unit, number>;
   unitLabel: string;
-  nativeUnitPicker: boolean;
   value: SupportMeasurement<Unit>;
   onChange: (value: SupportMeasurement<Unit>) => void;
 }) {
-  const unitOptions = Object.keys(units) as Unit[];
   const invalid =
     value.text.trim() !== '' &&
     (value.baseValue === null || value.baseValue <= 0);
@@ -417,45 +396,16 @@ function DecimalField<Unit extends string>({
           aria-invalid={invalid}
           aria-describedby={invalid ? `${id}-error` : undefined}
         />
-        {nativeUnitPicker ? (
-          <div className="relative w-28 shrink-0">
-            {/* iOS abre su selector al tocar directamente el control HTML. */}
-            <select
-              aria-label={unitLabel}
-              className="h-12 w-full appearance-none rounded-xl border border-input bg-background py-2 pr-8 pl-3 text-base font-semibold outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
-              value={value.unit}
-              onChange={(event) =>
-                changeUnit(event.currentTarget.value as Unit)
-              }
-            >
-              {unitOptions.map((unit) => (
-                <option key={unit} value={unit}>
-                  {unit}
-                </option>
-              ))}
-            </select>
-            <ChevronDown
-              aria-hidden="true"
-              className="pointer-events-none absolute top-1/2 right-3 size-4 -translate-y-1/2 text-muted-foreground"
-            />
-          </div>
-        ) : (
-          <Select<Unit> value={value.unit} onValueChange={changeUnit}>
-            <SelectTrigger
-              aria-label={unitLabel}
-              className="w-28 shrink-0 rounded-xl bg-background px-3 text-base font-semibold data-[size=default]:h-12"
-            >
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              {unitOptions.map((unit) => (
-                <SelectItem key={unit} value={unit}>
-                  {unit}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        )}
+        <CalculatorSelect
+          ariaLabel={unitLabel}
+          className="w-28 shrink-0 data-[size=default]:h-12"
+          value={value.unit}
+          onValueChange={changeUnit}
+          options={(Object.keys(units) as Unit[]).map((unit) => ({
+            value: unit,
+            label: unit,
+          }))}
+        />
       </div>
       {invalid && (
         <p id={`${id}-error`} role="alert" className="text-xs text-red-300">

@@ -16,15 +16,9 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Field, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
 import { parseLengthInput } from '@/lib/length-input';
+import { CalculatorSelect } from '@/components/calculators/calculator-select';
 import { SupportCalculator } from '@/components/calculators/support-calculator';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
 
 // Tabla del manual: diámetro del cable (mm) → peso por metro (kg/m).
 const cableWeights = {
@@ -58,6 +52,16 @@ const decimal = new Intl.NumberFormat('es-CL', {
   minimumFractionDigits: 2,
   maximumFractionDigits: 2,
 });
+
+const cableOptions = Object.entries(cableWeights).map(([size, weight]) => ({
+  value: size,
+  label: `${size} mm · ${decimal.format(weight)} kg/m`,
+}));
+
+const reevingOptions = factors.map((factor, index) => ({
+  value: String(index + 1),
+  label: `${index + 1} ${index === 0 ? 'ramal' : 'ramales'} · F ${decimal.format(factor)}`,
+}));
 
 export default function Home() {
   // Los campos de texto empiezan vacíos. null significa "sin seleccionar".
@@ -264,7 +268,17 @@ export default function Home() {
                       <FieldLabel htmlFor="cable-diameter">
                         Diámetro del cable
                       </FieldLabel>
-                      <Select
+                      <CalculatorSelect
+                        id="cable-diameter"
+                        className="w-full"
+                        placeholder="Seleccionar"
+                        options={cableOptions}
+                        icon={
+                          <Cable
+                            aria-hidden="true"
+                            className="mr-1 size-4 text-muted-foreground"
+                          />
+                        }
                         value={diameter === null ? null : String(diameter)}
                         onValueChange={(value) =>
                           setDiameter(
@@ -273,61 +287,29 @@ export default function Home() {
                               : (Number(value) as CableDiameter),
                           )
                         }
-                      >
-                        <SelectTrigger
-                          id="cable-diameter"
-                          className="h-12 w-full rounded-xl bg-background px-3 text-base font-semibold"
-                        >
-                          <Cable
-                            aria-hidden="true"
-                            className="mr-1 size-4 text-muted-foreground"
-                          />
-                          <SelectValue placeholder="Seleccionar" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {Object.entries(cableWeights).map(
-                            ([size, weight]) => (
-                              <SelectItem key={size} value={size}>
-                                {size} mm · {decimal.format(weight)} kg/m
-                              </SelectItem>
-                            ),
-                          )}
-                        </SelectContent>
-                      </Select>
+                      />
                     </Field>
 
                     <Field>
                       <FieldLabel htmlFor="reeving">
                         Número de ramales
                       </FieldLabel>
-                      <Select
-                        value={reeving === null ? null : String(reeving)}
-                        onValueChange={(value) =>
-                          setReeving(value === null ? null : Number(value))
-                        }
-                      >
-                        <SelectTrigger
-                          id="reeving"
-                          className="h-12 w-full rounded-xl bg-background px-3 text-base font-semibold"
-                        >
+                      <CalculatorSelect
+                        id="reeving"
+                        className="w-full"
+                        placeholder="Seleccionar"
+                        options={reevingOptions}
+                        icon={
                           <CircleGauge
                             aria-hidden="true"
                             className="mr-1 size-4 text-muted-foreground"
                           />
-                          <SelectValue placeholder="Seleccionar" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {factors.map((factor, index) => (
-                            <SelectItem
-                              key={index + 1}
-                              value={String(index + 1)}
-                            >
-                              {index + 1} {index === 0 ? 'ramal' : 'ramales'} ·
-                              F {decimal.format(factor)}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
+                        }
+                        value={reeving === null ? null : String(reeving)}
+                        onValueChange={(value) =>
+                          setReeving(value === null ? null : Number(value))
+                        }
+                      />
                     </Field>
                   </div>
 

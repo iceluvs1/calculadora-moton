@@ -16,10 +16,6 @@ export type SupportMeasurement<Unit extends string> = {
   baseValue: number | null;
 };
 
-export function usesNativeUnitPicker(userAgent: string, platform: string) {
-  return platform === 'iPhone' || /\biPhone\b/.test(userAgent);
-}
-
 const inputFormat = new Intl.NumberFormat('es-CL', {
   useGrouping: false,
   maximumSignificantDigits: 15,

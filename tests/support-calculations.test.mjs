@@ -14,8 +14,8 @@ import {
   dimensionUnits,
   forceUnits,
   pressureUnits,
-  usesNativeUnitPicker,
 } from '../lib/support-units.ts';
+import { isIPhone } from '../lib/iphone.ts';
 
 test('square manual example: 500 mm, 720 kN, 80% bearing area', () => {
   const result = calculatePlate(720, 500, 'square');
@@ -119,10 +119,10 @@ test('the native unit picker is selected on iPhone and the custom menu remains t
     'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 Version/18.0 Safari/605.1.15';
   const android =
     'Mozilla/5.0 (Linux; Android 15; Pixel 9) AppleWebKit/537.36 Chrome/130.0 Mobile Safari/537.36';
-  assert.equal(usesNativeUnitPicker(iphone, ''), true);
-  assert.equal(usesNativeUnitPicker(desktopSafari, 'iPhone'), true);
-  assert.equal(usesNativeUnitPicker(desktopSafari, 'MacIntel'), false);
-  assert.equal(usesNativeUnitPicker(android, 'Linux armv8l'), false);
+  assert.equal(isIPhone(iphone, ''), true);
+  assert.equal(isIPhone(desktopSafari, 'iPhone'), true);
+  assert.equal(isIPhone(desktopSafari, 'MacIntel'), false);
+  assert.equal(isIPhone(android, 'Linux armv8l'), false);
 });
 
 test('empty, zero, negative and non-finite values cannot produce valid results', () => {
